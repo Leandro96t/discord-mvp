@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ChannelType {
+  TEXT
+  VOICE
+}
+
+model User {
+  id          String         @id @default(cuid())
+  username    String         @unique
+  email       String         @unique
+  password    String
+  createdAt   DateTime       @default(now())
+  memberships Membership[]
+  serversOwned Server[]      @relation("ServerOwner")
+  messages    Message[]
+}
+
+model Server {
+  id          String         @id @default(cuid())
+  name        String
+  ownerId     String
+  createdAt   DateTime       @default(now())
+  owner       User           @relation("ServerOwner", fields: [ownerId], references: [id])
+  memberships Membership[]
+  channels    Channel[]
+}
+
+model Membership {
+  id        String   @id @default(cuid())
+  userId    String
+  serverId  String
+  role      String   @default("MEMBER")
+  joinedAt  DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  server    Server   @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, serverId])
+}
+
+model Channel {
+  id        String      @id @default(cuid())
+  serverId  String
+  name      String
+  type      ChannelType
+  createdAt DateTime    @default(now())
+  server    Server      @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  messages  Message[]
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  channelId String
+  userId    String
+  content   String
+  createdAt DateTime @default(now())
+  channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

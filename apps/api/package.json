@@ -1,0 +1,26 @@
+{
+  "name": "discord-mvp-api",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push"
+  },
+  "dependencies": {
+"livekit-server-sdk": "^2.15.0",
+    "@prisma/client": "^6.16.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.15.0",
+    "prisma": "^6.16.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.9.2"
+  }
+}

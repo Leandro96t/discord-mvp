@@ -1,0 +1,22 @@
+{
+  "name": "discord-mvp-web",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build"
+  },
+  "dependencies": {
+    "@livekit/components-react": "^2.9.2",
+    "@livekit/components-styles": "^1.2.0",
+    "livekit-client": "^2.15.4",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.2",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.7"
+  }
+}

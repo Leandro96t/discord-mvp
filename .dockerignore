@@ -1,0 +1,7 @@
+node_modules
+.git
+.env
+apps/api/.env
+apps/web/node_modules
+apps/web/dist
+npm-debug.log
