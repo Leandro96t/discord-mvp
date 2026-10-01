@@ -82,6 +82,118 @@ app.get("/servers/:serverId", async (req, res) => {
   if (!server) return res.status(404).json({ error: "Servidor não encontrado" });
   return res.json(server);
 });
+app.post("/servers/:serverId/join", async (req, res) => {
+  const { userId } = req.body ?? {};
+  const { serverId } = req.params;
+
+  if (!userId || !serverId) {
+    return res.status(400).json({
+      error: "userId e serverId são obrigatórios"
+    });
+  }
+
+  try {
+    const server = await prisma.server.findUnique({
+      where: { id: serverId }
+    });
+
+    if (!server) {
+      return res.status(404).json({
+        error: "Servidor não encontrado"
+      });
+    }
+
+    const existingMembership = await prisma.membership.findUnique({
+      where: {
+        userId_serverId: {
+          userId,
+          serverId
+        }
+      }
+    });
+
+    if (!existingMembership) {
+      await prisma.membership.create({
+        data: {
+          userId,
+          serverId,
+          role: "MEMBER"
+        }
+      });
+    }
+
+    const serverWithChannels = await prisma.server.findUnique({
+      where: { id: serverId },
+      include: {
+        channels: true
+      }
+    });
+
+    return res.json(serverWithChannels);
+  } catch (error) {
+    console.error("Erro ao entrar no servidor:", error);
+
+    return res.status(500).json({
+      error: "Não foi possível entrar no servidor"
+    });
+  }
+});
+app.post("/servers/:serverId/join", async (req, res) => {
+  const { userId } = req.body ?? {};
+  const { serverId } = req.params;
+
+  if (!userId || !serverId) {
+    return res.status(400).json({
+      error: "userId e serverId são obrigatórios"
+    });
+  }
+
+  try {
+    const server = await prisma.server.findUnique({
+      where: { id: serverId }
+    });
+
+    if (!server) {
+      return res.status(404).json({
+        error: "Servidor não encontrado"
+      });
+    }
+
+    const existingMembership = await prisma.membership.findUnique({
+      where: {
+        userId_serverId: {
+          userId,
+          serverId
+        }
+      }
+    });
+
+    if (!existingMembership) {
+      await prisma.membership.create({
+        data: {
+          userId,
+          serverId,
+          role: "MEMBER"
+        }
+      });
+    }
+
+    const serverWithChannels = await prisma.server.findUnique({
+      where: { id: serverId },
+      include: {
+        channels: true
+      }
+    });
+
+    return res.json(serverWithChannels);
+  } catch (error) {
+    console.error("Erro ao entrar no servidor:", error);
+
+    return res.status(500).json({
+      error: "Não foi possível entrar no servidor"
+    });
+  }
+});
 
 app.post("/livekit/token", async (req, res) => {
   const { identity, channelId } = req.body ?? {};

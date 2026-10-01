@@ -21,6 +21,7 @@ type Server = {
 export function App() {
   const [username, setUsername] = useState("Leandro");
   const [server, setServer] = useState<Server | null>(null);
+  const [serverId, setServerId] = useState("");
   const [room, setRoom] = useState<{ token: string; url: string; name: string } | null>(null);
   const [status, setStatus] = useState("");
 
@@ -65,6 +66,61 @@ export function App() {
 
     setServer(created);
     setStatus("Servidor criado.");
+  } catch (error) {
+    console.error(error);
+    setStatus("Erro de conexão com a API.");
+  }
+}
+async function joinServer() {
+  if (!serverId.trim()) {
+    setStatus("Informe o ID do servidor.");
+    return;
+  }
+
+  setStatus("Criando usuário...");
+
+  try {
+    const registerResponse = await fetch(`${API}/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: `${username}-${Date.now()}`,
+        email: `${Date.now()}@local.test`,
+        password: "dev-password"
+      })
+    });
+
+    const user = await registerResponse.json();
+
+    if (!registerResponse.ok || !user.user?.id) {
+      setStatus(user.error || "Não foi possível criar o usuário.");
+      return;
+    }
+
+    setStatus("Entrando no servidor...");
+
+    const response = await fetch(
+      `${API}/servers/${serverId.trim()}/join`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.user.id
+        })
+      }
+    );
+
+    const joinedServer = await response.json();
+
+    if (!response.ok || !joinedServer.id) {
+      setStatus(
+        joinedServer.error || "Não foi possível entrar no servidor."
+      );
+      return;
+    }
+
+    setServer(joinedServer);
+    setStatus("Você entrou no servidor.");
   } catch (error) {
     console.error(error);
     setStatus("Erro de conexão com a API.");
@@ -124,10 +180,32 @@ export function App() {
         </label>
 
         {!server ? (
-          <button onClick={createServer}>Criar meu primeiro servidor</button>
-        ) : (
+  <>
+    <button onClick={createServer}>
+      Criar meu primeiro servidor
+    </button>
+
+    <div className="join-server">
+      <p>Ou entre em um servidor existente:</p>
+
+      <input
+        value={serverId}
+        onChange={e => setServerId(e.target.value)}
+        placeholder="ID do servidor"
+      />
+
+      <button onClick={joinServer}>
+        Entrar no servidor
+      </button>
+    </div>
+  </>
+) : (
           <>
             <h2>{server.name}</h2>
+            <p>
+  ID do servidor:
+  <code>{server.id}</code>
+</p>
             <div className="channels">
               {server.channels.map(channel => (
                 <button
