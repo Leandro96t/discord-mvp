@@ -71,21 +71,29 @@ export function App() {
   }
 }
 
-  async function enterVoice(channelName: string) {
-    if (!server) return;
-    const roomName = `${server.id}-${channelName}`;
+  async function enterVoice(channelId: string) {
+  if (!server) return;
 
-    const result = await fetch(`${API}/livekit/token`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ identity: username, roomName })
-    }).then(r => r.json());
+  const result = await fetch(`${API}/livekit/token`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      identity: username,
+      channelId
+    })
+  }).then(r => r.json());
 
-    if (result.token) {
-      setRoom({ token: result.token, url: result.url, name: roomName });
-    }
+  if (result.token) {
+    setRoom({
+      token: result.token,
+      url: result.url,
+      name: result.roomName
+    });
+  } else {
+    console.error("Erro ao entrar na sala:", result);
+    setStatus(result.error || "Não foi possível entrar na sala.");
   }
-
+}
   if (room) {
     return (
       <LiveKitRoom
@@ -123,12 +131,12 @@ export function App() {
             <div className="channels">
               {server.channels.map(channel => (
                 <button
-                  key={channel.id}
-                  disabled={channel.type !== "VOICE"}
-                  onClick={() => enterVoice(channel.name)}
-                >
-                  {channel.type === "VOICE" ? "🔊" : "#"} {channel.name}
-                </button>
+                   key={channel.id}
+                     disabled={channel.type !== "VOICE"}
+                        onClick={() => enterVoice(channel.id)}
+>
+  {channel.type === "VOICE" ? "🔊" : "#"} {channel.name}
+</button>
               ))}
             </div>
           </>

@@ -84,17 +84,25 @@ app.get("/servers/:serverId", async (req, res) => {
 });
 
 app.post("/livekit/token", async (req, res) => {
-  const { identity, roomName } = req.body ?? {};
-  if (!identity || !roomName) {
-    return res.status(400).json({ error: "identity e roomName são obrigatórios" });
+  const { identity, channelId } = req.body ?? {};
+
+  if (!identity || !channelId) {
+    return res.status(400).json({
+      error: "identity e channelId são obrigatórios"
+    });
   }
 
   const apiKey = process.env.LIVEKIT_API_KEY;
   const apiSecret = process.env.LIVEKIT_API_SECRET;
 
   if (!apiKey || !apiSecret) {
-    return res.status(500).json({ error: "LIVEKIT_API_KEY/SECRET não configurados" });
+    return res.status(500).json({
+      error: "LIVEKIT_API_KEY/SECRET não configurados"
+    });
   }
+
+  // Cada canal de voz possui uma sala LiveKit própria
+  const roomName = `channel-${channelId}`;
 
   const token = new AccessToken(apiKey, apiSecret, {
     identity,
@@ -112,7 +120,8 @@ app.post("/livekit/token", async (req, res) => {
 
   return res.json({
     token: await token.toJwt(),
-    url: process.env.LIVEKIT_URL
+    url: process.env.LIVEKIT_URL,
+    roomName
   });
 });
 
