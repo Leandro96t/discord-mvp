@@ -22,97 +22,344 @@ input {
   font: inherit;
 }
 
-/* =========================================================
+/* ================================
    TELA INICIAL
-   ========================================================= */
+================================ */
 
 .app {
   min-height: 100vh;
-  display: grid;
-  place-items: center;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 24px;
   background:
-    radial-gradient(circle at top, #1e293b 0%, #111827 45%, #0b1120 100%);
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(88, 101, 242, 0.22),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 100% 100%,
+      rgba(114, 137, 218, 0.08),
+      transparent 35%
+    ),
+    #0b0d10;
 }
 
-.card {
-  width: min(620px, 100%);
-  background: #1f2937;
-  border: 1px solid #374151;
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+.login-card {
+  width: min(460px, 100%);
+  padding: 42px;
+  border: 1px solid #292d33;
+  border-radius: 18px;
+  background: rgba(23, 26, 31, 0.96);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.02);
 }
 
-.card h1 {
-  margin-top: 0;
+.brand-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 20px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #5865f2;
+  box-shadow: 0 10px 30px rgba(88, 101, 242, 0.3);
 }
 
-.card label {
-  display: grid;
-  gap: 8px;
-  margin: 24px 0;
-}
-
-.card input {
-  width: 100%;
-  background: #111827;
-  border: 1px solid #374151;
+.brand-icon span {
   color: white;
-  padding: 12px;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.login-card h1 {
+  margin: 0;
+  text-align: center;
+  color: #f2f3f5;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.login-subtitle {
+  margin: 10px auto 32px;
+  max-width: 340px;
+  text-align: center;
+  color: #949ba4;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.login-form {
+  width: 100%;
+}
+
+.field {
+  display: grid;
+  gap: 9px;
+  margin-bottom: 18px;
+}
+
+.field span,
+.join-title,
+.server-id-box > span {
+  color: #b5bac1;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.field input,
+.server-id-input {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  border: 1px solid #2f3339;
   border-radius: 8px;
   outline: none;
+  background: #0f1115;
+  color: #f2f3f5;
+  font-size: 14px;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
-.card input:focus {
+.field input::placeholder,
+.server-id-input::placeholder {
+  color: #5f6670;
+}
+
+.field input:focus,
+.server-id-input:focus {
   border-color: #5865f2;
+  background: #111318;
+  box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.12);
 }
 
-.card button {
+.primary-button,
+.secondary-button {
+  width: 100%;
+  height: 46px;
+  margin: 0;
   border: 0;
   border-radius: 8px;
-  padding: 12px 16px;
-  background: #5865f2;
-  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   cursor: pointer;
-  margin: 6px 0;
-  transition: background 0.15s ease;
+  font-size: 14px;
+  font-weight: 600;
+  transition:
+    background 0.15s ease,
+    transform 0.1s ease;
 }
 
-.card button:hover:not(:disabled) {
+.primary-button {
+  background: #5865f2;
+  color: white;
+}
+
+.primary-button:hover {
   background: #4752c4;
 }
 
-.card button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.primary-button:active,
+.secondary-button:active {
+  transform: translateY(1px);
 }
 
-.join-server {
+.primary-button span {
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 400;
+}
+
+.divider {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #4f555e;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: #292d33;
+}
+
+.divider span {
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.join-section {
+  padding: 18px;
+  border: 1px solid #292d33;
+  border-radius: 10px;
+  background: #171a1f;
+}
+
+.join-title {
+  margin-bottom: 6px;
+  color: #dbdee1;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+.join-description {
+  margin-bottom: 14px;
+  color: #949ba4;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.server-id-input {
+  margin-bottom: 10px;
+}
+
+.secondary-button {
+  background: #2b2f35;
+  color: #f2f3f5;
+}
+
+.secondary-button:hover {
+  background: #353a41;
+}
+
+.status-message {
+  margin-top: 18px;
+  padding: 10px 12px;
+  border-radius: 7px;
+  background: #111318;
+  color: #949ba4;
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.login-footer {
   margin-top: 28px;
-  padding-top: 20px;
-  border-top: 1px solid #374151;
+  color: #4f555e;
+  font-size: 11px;
+  text-align: center;
 }
 
-.channels {
-  display: grid;
-  gap: 8px;
+/* SERVIDOR CRIADO */
+
+.server-created {
+  text-align: center;
 }
 
-.card code {
+.server-created-icon {
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(35, 165, 90, 0.12);
+  color: #23a55a;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.server-created h2 {
+  margin: 0;
+  color: #f2f3f5;
+  font-size: 21px;
+}
+
+.server-created > p {
+  margin: 7px 0 20px;
+  color: #949ba4;
+  font-size: 13px;
+}
+
+.server-id-box {
+  padding: 12px;
+  margin-bottom: 18px;
+  border: 1px solid #292d33;
+  border-radius: 8px;
+  background: #0f1115;
+  text-align: left;
+}
+
+.server-id-box > span {
   display: block;
-  margin-top: 8px;
-  padding: 10px;
-  background: #111827;
-  border-radius: 6px;
+  margin-bottom: 7px;
+  font-size: 9px;
+}
+
+.server-id-box code {
+  display: block;
+  margin: 0;
+  padding: 0;
+  background: transparent;
   color: #a5b4fc;
+  font-size: 12px;
   word-break: break-all;
 }
 
-.card small {
-  display: block;
-  margin-top: 20px;
-  color: #9ca3af;
+.server-created .channels {
+  display: grid;
+  gap: 7px;
+}
+
+.server-created .channels button {
+  width: 100%;
+  height: 42px;
+  margin: 0;
+  border: 0;
+  border-radius: 7px;
+  background: #1c1f24;
+  color: #dbdee1;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.server-created .channels button:hover:not(:disabled) {
+  background: #292d33;
+}
+
+.server-created .channels button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.server-created .channels button span {
+  display: inline-block;
+  width: 28px;
+  color: #949ba4;
+  text-align: center;
+}
+
+/* RESPONSIVO DA TELA INICIAL */
+
+@media (max-width: 520px) {
+  .app {
+    padding: 16px;
+  }
+
+  .login-card {
+    padding: 30px 22px;
+    border-radius: 14px;
+  }
+
+  .login-card h1 {
+    font-size: 24px;
+  }
 }
 
 /* =========================================================

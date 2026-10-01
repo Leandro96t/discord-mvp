@@ -220,83 +220,125 @@ export function App() {
   }
 
   return (
-    <main className="app">
-      <section className="card">
-        <h1>Discord MVP</h1>
+  <main className="app">
+    <section className="login-card">
 
-        <p>
-          React + Node.js + PostgreSQL + LiveKit
-        </p>
+      <div className="brand-icon">
+        <span>✦</span>
+      </div>
 
-        <label>
-          Seu nome
+      <h1>Discord MVP</h1>
+
+      <p className="login-subtitle">
+        Seu espaço para conversar, compartilhar e se conectar.
+      </p>
+
+      <div className="login-form">
+
+        <label className="field">
+          <span>SEU NOME</span>
 
           <input
             value={username}
-            onChange={(e) =>
-              setUsername(e.target.value)
-            }
+            onChange={e => setUsername(e.target.value)}
+            placeholder="Digite seu nome"
+            maxLength={32}
           />
         </label>
 
         {!server ? (
           <>
-            <button onClick={createServer}>
-              Criar meu primeiro servidor
+            <button
+              className="primary-button"
+              onClick={createServer}
+            >
+              <span>＋</span>
+              Criar meu servidor
             </button>
 
-            <div className="join-server">
-              <p>
-                Ou entre em um servidor existente:
-              </p>
+            <div className="divider">
+              <span>OU</span>
+            </div>
+
+            <div className="join-section">
+
+              <div className="join-title">
+                Entrar em um servidor
+              </div>
+
+              <div className="join-description">
+                Digite o ID do servidor que você recebeu.
+              </div>
 
               <input
+                className="server-id-input"
                 value={serverId}
-                onChange={(e) =>
-                  setServerId(e.target.value)
-                }
+                onChange={e => setServerId(e.target.value)}
                 placeholder="ID do servidor"
               />
 
-              <button onClick={joinServer}>
+              <button
+                className="secondary-button"
+                onClick={joinServer}
+              >
                 Entrar no servidor
               </button>
+
             </div>
           </>
         ) : (
-          <>
+          <div className="server-created">
+
+            <div className="server-created-icon">
+              ✓
+            </div>
+
             <h2>{server.name}</h2>
 
             <p>
-              ID do servidor:
-              <code>{server.id}</code>
+              Você entrou no servidor.
             </p>
 
+            <div className="server-id-box">
+              <span>ID DO SERVIDOR</span>
+
+              <code>{server.id}</code>
+            </div>
+
             <div className="channels">
-              {server.channels.map((channel) => (
+              {server.channels.map(channel => (
                 <button
                   key={channel.id}
-                  disabled={
-                    channel.type !== "VOICE"
-                  }
-                  onClick={() =>
-                    enterVoice(channel.id)
-                  }
+                  disabled={channel.type !== "VOICE"}
+                  onClick={() => enterVoice(channel.id)}
                 >
-                  {channel.type === "VOICE"
-                    ? "🔊"
-                    : "#"}{" "}
+                  <span>
+                    {channel.type === "VOICE" ? "🔊" : "#"}
+                  </span>
+
                   {channel.name}
                 </button>
               ))}
             </div>
-          </>
+
+          </div>
         )}
 
-        <small>{status}</small>
-      </section>
-    </main>
-  );
+        {status && (
+          <div className="status-message">
+            {status}
+          </div>
+        )}
+
+      </div>
+
+      <div className="login-footer">
+        Discord MVP
+      </div>
+
+    </section>
+  </main>
+);
 }
 
 type VoiceRoomProps = {
